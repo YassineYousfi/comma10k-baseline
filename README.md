@@ -4,6 +4,13 @@ A semantic segmentation baseline using [@comma.ai](https://github.com/commaai)'s
 
 Using U-Net with efficientnet encoder, this baseline reaches 0.045 validation loss.
 
+## Visualize
+Here is an example (randomly from the validation set, no cherry picking)
+#### Ground truth 
+![Ground truth](example.png)
+#### Predicted
+![Prediction](example_pred.png)
+
 
 ## How to use
 This baseline uses two stages (i) 448x576 (ii) 896x1184 (close to full resolution)
