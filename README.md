@@ -26,4 +26,4 @@ python3 train_lit_model.py --backbone efficientnet-b4 --version second-stage --g
 
 
 ## Dependecies
-Python 3.5+, pytorch 1.4+ and dependencies listed in requirements.txt.
+Python 3.5+, pytorch 1.6+ and dependencies listed in requirements.txt.
