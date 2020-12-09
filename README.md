@@ -2,7 +2,7 @@
 
 A semantic segmentation baseline using [@comma.ai](https://github.com/commaai)'s [comma10k dataset](https://github.com/commaai/comma10k).
 
-Using U-Net with efficientnet encoder, this baseline reaches 0.045 validation loss.
+Using U-Net with efficientnet encoder, this baseline reaches 0.044 validation loss.
 
 ## Visualize
 Here is an example (randomly from the validation set, no cherry picking)
@@ -13,16 +13,17 @@ Here is an example (randomly from the validation set, no cherry picking)
 
 
 ## How to use
-This baseline uses two stages (i) 448x576 (ii) 896x1184 (close to full resolution)
+This baseline uses two stages (i) 437x582 (ii) 874x1164 (full resolution)
 ```
-python3 train_lit_model.py --backbone efficientnet-b4 --version first-stage --gpus 2 --batch-size 28 --epochs 100 --height 448 --width 576
-python3 train_lit_model.py --backbone efficientnet-b4 --version second-stage --gpus 2 --batch-size 7 --learning-rate 5e-5 --epochs 30 --height 896 --width 1184 --seed-from-checkpoint .../efficientnet-b4/first-stage/checkpoints/last.ckpt
+python3 train_lit_model.py --backbone efficientnet-b4 --version first-stage --gpus 2 --batch-size 28 --epochs 100 --height 437 --width 582
+python3 train_lit_model.py --backbone efficientnet-b4 --version second-stage --gpus 2 --batch-size 7 --learning-rate 5e-5 --epochs 30 --height 874 --width 1164 --augmentation-level hard --seed-from-checkpoint .../efficientnet-b4/first-stage/checkpoints/last.ckpt
 ```
 
-## WIP
+## WIP and ideas of contributions! 
 - Update to pytorch lightning 1.0
-- Use A.PadIfNeeded in the second stage instead of Resize
 - Try more image augmentations
+- Pretrain on a larger driving dataset
+- Try over sampling images with small or far objects
 
 
 ## Dependecies

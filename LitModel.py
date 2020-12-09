@@ -26,6 +26,7 @@ class LitModel(pl.LightningModule):
     def __init__(self,
                  data_path: Union[str, Path],
                  backbone: str = 'efficientnet-b0',
+                 augmentation_level: str = 'light',
                  batch_size: int = 32,
                  lr: float = 1e-4,
                  eps: float = 1e-7,
@@ -34,7 +35,8 @@ class LitModel(pl.LightningModule):
                  num_workers: int = 6, 
                  epochs: int = 50, 
                  gpus: int = 1, 
-                 weight_decay: float = 1e-3
+                 weight_decay: float = 1e-3,
+                 class_values: List[int] = [41,  76,  90, 124, 161, 0] # 0 added for padding
                  ,**kwargs) -> None:
         
         super().__init__()
@@ -49,7 +51,8 @@ class LitModel(pl.LightningModule):
         self.gpus = gpus
         self.weight_decay = weight_decay
         self.eps = eps
-        self.class_values = [41,  76,  90, 124, 161]
+        self.class_values = class_values 
+        self.augmentation_level = augmentation_level 
         
         self.save_hyperparameters()
 
@@ -172,7 +175,7 @@ class LitModel(pl.LightningModule):
             data_path=self.data_path,
             image_names=[x.split('masks/')[-1] for x in image_names if not x.endswith('9.png')],
             preprocess_fn=self.preprocess_fn,
-            transforms=get_train_transforms(self.height, self.width),
+            transforms=get_train_transforms(self.height, self.width, self.augmentation_level),
             class_values=self.class_values
         )
         
@@ -213,6 +216,10 @@ class LitModel(pl.LightningModule):
                             type=str,
                             metavar='BK',
                             help='Name as in segmentation_models_pytorch')
+        parser.add_argument('--augmentation-level',
+                            default='light',
+                            type=str,
+                            help='Training augmentation level c.f. retiriever')
         parser.add_argument('--data-path',
                             default='/home/yyousfi1/commaai/comma10k',
                             type=str,
