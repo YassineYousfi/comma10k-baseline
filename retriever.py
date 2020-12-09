@@ -78,7 +78,7 @@ class TrainRetriever(Dataset):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
         mask = cv2.imread(str(self.data_path/self.masks_folder/image_name), 0)
-        mask = np.stack([(mask == v) for v in self.class_values], axis=-1).astype('float')
+        mask = np.stack([(mask == v) for v in self.class_values], axis=-1).astype('uint8')
 
         if self.transforms:
             sample = self.transforms(image=image, mask=mask)
