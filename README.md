@@ -22,7 +22,7 @@ python3 train_lit_model.py --backbone efficientnet-b4 --version second-stage --g
 ## WIP and ideas of contributions! 
 - Update to pytorch lightning 1.0
 - Try more image augmentations
-- Pretrain on a larger driving dataset
+- Pretrain on a larger driving dataset (make sure license is permissive)
 - Try over sampling images with small or far objects
 
 
