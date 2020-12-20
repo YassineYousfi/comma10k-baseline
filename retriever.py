@@ -87,7 +87,52 @@ def get_train_transforms(height: int = 437,
                               mask_value=0) 
             ], p=1.0)
     elif level == 'hard_weather':
-        raise NotImplementedError("WIP")
+        return A.Compose([
+                A.HorizontalFlip(p=0.5),
+                A.IAAAdditiveGaussianNoise(p=0.2),
+                A.OneOf(
+                    [A.GridDistortion(border_mode=cv2.BORDER_CONSTANT, value=0, mask_value=0, p=1.0),
+                     A.ElasticTransform(alpha_affine=10, border_mode=cv2.BORDER_CONSTANT, value=0, mask_value=0, p=1.0),
+                     A.ShiftScaleRotate(
+                         shift_limit=0,
+                         scale_limit=0,
+                         rotate_limit=10,
+                         border_mode=cv2.BORDER_CONSTANT,
+                         value=0,
+                         mask_value=0,
+                         p=1.0
+                     ),
+                     A.OpticalDistortion(border_mode=cv2.BORDER_CONSTANT, value=0, mask_value=0, p=1.0),
+                    ],p=0.5),
+                A.OneOf(
+                    [A.CLAHE(p=1.0),
+                    A.RandomBrightness(p=1.0),
+                    A.RandomGamma(p=1.0),
+                    A.ISONoise(p=1.0)
+                    ],p=0.5),
+                A.OneOf(
+                    [A.IAASharpen(p=1.0),
+                    A.Blur(blur_limit=3, p=1.0),
+                    A.MotionBlur(blur_limit=3, p=1.0),
+                    ],p=0.5),
+                A.OneOf(
+                    [A.RandomContrast(p=1.0),
+                    A.HueSaturationValue(p=1.0),
+                    ],p=0.5),
+                A.OneOf(
+                    [A.RandomFog(fog_coef_upper=0.8, p=1.0),
+                     A.RandomRain(p=1.0),
+                     A.RandomSnow(p=1.0),
+                     A.RandomSunFlare(src_radius=100, p=1.0)
+                    ],p=0.4),
+                A.Resize(height=height, width=width, p=1.0),
+                A.Cutout(p=0.3),
+                A.PadIfNeeded(pad_to_multiple(height), 
+                              pad_to_multiple(width), 
+                              border_mode=cv2.BORDER_CONSTANT, 
+                              value=0, 
+                              mask_value=0) 
+            ], p=1.0)
 
 def get_valid_transforms(height: int = 437, 
                          width: int = 582): 

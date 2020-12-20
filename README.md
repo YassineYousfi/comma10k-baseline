@@ -11,6 +11,12 @@ Here is an example (randomly from the validation set, no cherry picking)
 #### Predicted
 ![Prediction](example_pred.png)
 
+## Info 
+
+The comma10k dataset is currently being labeled, stay tuned for:
+- A retrained model when the dataset is released
+- More features to use the model
+
 
 ## How to use
 This baseline uses two stages (i) 437x582 (ii) 874x1164 (full resolution)
