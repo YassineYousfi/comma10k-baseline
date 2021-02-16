@@ -52,6 +52,7 @@ class LitModel(pl.LightningModule):
         self.weight_decay = weight_decay
         self.eps = eps
         self.class_values = class_values 
+        self.class_colors = np.array([[32, 32, 64], [0, 0, 255], [255, 0, 204], [ 96, 128, 128], [102, 255, 0], [255, 255, 255]])
         self.augmentation_level = augmentation_level 
         
         self.save_hyperparameters()
@@ -134,6 +135,20 @@ class LitModel(pl.LightningModule):
             
         return {'log': metrics}
 
+
+    def test_step(self, batch, batch_idx):
+        """Test step used for inference a quick workaround to used pytorch lightning 
+        ddp and amp in inference without introducing new classes
+        """
+        names, x = batch
+        y_logits = self.forward(x)
+
+        y_mask = torch.argmax(y_logits, axis=1)
+        y_mask = y_mask.cpu().numpy()
+        y_mask = self.class_colors[y_mask.ravel()].reshape(y_mask.shape+(3,)) # inverse encoding
+
+        for i in range(y_mask.shape[0]):
+            cv2.imwrite(str(self.folder_to_predict/'predicted_masks'/names[i]), y_mask[i].astype(np.uint8)) 
 
     def configure_optimizers(self):
 

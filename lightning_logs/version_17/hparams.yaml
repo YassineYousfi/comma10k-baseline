@@ -1,0 +1,22 @@
+augmentation_level: light
+backbone: efficientnet-b4
+batch_size: 7
+class_values:
+- 41
+- 76
+- 90
+- 124
+- 161
+- 0
+data_path: /home/yyousfi1/commaai/comma10k
+epochs: 30
+eps: 1.0e-07
+gpus: 2
+height: 874
+lr: 5.0e-05
+num_workers: 6
+resume_from_checkpoint: null
+seed_from_checkpoint: /home/yyousfi1/LogFiles/comma/efficientnet-b4/first-stage-pad-v2/checkpoints/epoch=86_val_loss=0.0474.ckpt
+version: second-stage-pad-hardaug
+weight_decay: 0.001
+width: 1164

@@ -18,7 +18,7 @@ The comma10k dataset is currently being labeled, stay tuned for:
 - More features to use the model
 
 
-## How to use
+## How to train
 This baseline uses two stages (i) 437x582 (ii) 874x1164 (full resolution)
 ```
 python3 train_lit_model.py --backbone efficientnet-b4 --version first-stage --gpus 2 --batch-size 28 --epochs 100 --height 437 --width 582

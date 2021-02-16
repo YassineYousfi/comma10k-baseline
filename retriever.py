@@ -199,4 +199,38 @@ class TrainRetriever(Dataset):
     def __len__(self) -> int:
         return len(self.image_names)
     
+class InferenceRetriever(Dataset):
+
+    def __init__(self, 
+                 data_path: Path, 
+                 image_names: List[str], 
+                 preprocess_fn: Callable, 
+                 transforms: Compose):
+        super().__init__()
+        
+        self.data_path = data_path
+        self.image_names = image_names
+        self.transforms = transforms
+        self.preprocess = get_preprocessing(preprocess_fn)
+        self.images_folder = 'imgs'
+
+    def __getitem__(self, index: int):
+        
+        image_name = self.image_names[index]
+        
+        image = cv2.imread(str(self.data_path/self.images_folder/image_name))
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+        if self.transforms:
+            sample = self.transforms(image=image)
+            image = sample['image']
+
+        if self.preprocess:
+            sample = self.preprocess(image=image)
+            image = sample['image']
+
+        return image_name, image
+
+    def __len__(self) -> int:
+        return len(self.image_names)
     
