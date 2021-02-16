@@ -19,7 +19,8 @@ def main(args):
     
     model = LitModel.load_from_checkpoint(args.resume_from_checkpoint)
     
-    trainer = Trainer(gpus=args.gpus,
+    trainer = Trainer(logger=None,
+                     gpus=args.gpus,
                      precision=16,
                      amp_backend='native',
                      row_log_interval=100,
