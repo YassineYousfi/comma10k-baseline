@@ -25,6 +25,12 @@ python3 train_lit_model.py --backbone efficientnet-b4 --version first-stage --gp
 python3 train_lit_model.py --backbone efficientnet-b4 --version second-stage --gpus 2 --batch-size 7 --learning-rate 5e-5 --epochs 30 --height 874 --width 1164 --augmentation-level hard --seed-from-checkpoint .../efficientnet-b4/first-stage/checkpoints/last.ckpt
 ```
 
+## How to predict masks from a folder
+Make sure the folder has a `imgs/` subfolder with .png valid images. The predicted masks will be saved in `predicted_masks/`
+```
+python3 predict_folder.py --gpus 2 --batch-size 40 --folder-to-predict {folder with imgs/ to predict} --resume-from-checkpoint {checkpoint path}
+```
+
 ## WIP and ideas of contributions! 
 - Update to pytorch lightning 1.0
 - Try more image augmentations
