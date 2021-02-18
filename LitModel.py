@@ -143,8 +143,12 @@ class LitModel(pl.LightningModule):
         names, x = batch
         y_logits = self.forward(x)
 
-        y_mask = torch.argmax(y_logits, axis=1)
+        y_mask = torch.argmax(y_logits, axis=1)  
         y_mask = y_mask.cpu().numpy()
+
+        h_pad_top = int(pad_to_multiple(self.height) - self.height)//2
+        w_pad_left = int(pad_to_multiple(self.width) - self.width)//2   
+        y_mask = y_mask[:,h_pad_top:h_pad_top+self.height, w_pad_left:w_pad_left+self.width] # inverse padding
         y_mask = self.class_colors[y_mask.ravel()].reshape(y_mask.shape+(3,)) # inverse encoding
 
         for i in range(y_mask.shape[0]):

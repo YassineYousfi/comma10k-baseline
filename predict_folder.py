@@ -17,7 +17,7 @@ seed_everything(1994)
 def main(args):
     """ Main inference routine specific for this project. """
     
-    model = LitModel.load_from_checkpoint(args.resume_from_checkpoint)
+    model = LitModel.load_from_checkpoint(args.resume_from_checkpoint, data_path=args.data_path)
     
     trainer = Trainer(logger=None,
                      gpus=args.gpus,
@@ -33,7 +33,7 @@ def main(args):
     assert (folder_to_predict/'imgs').is_dir(), 'Images not found'
     
     images_list = list(folder_to_predict.glob('*/*.png'))
-    images_list = [os.path.basename(x) for x in images_list]
+    images_list = [os.path.basename(x) for x in images_list][:50]
     (folder_to_predict/'predicted_masks').mkdir(exist_ok=True)
 
     test_dataset = InferenceRetriever(
