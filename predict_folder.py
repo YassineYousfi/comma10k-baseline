@@ -33,7 +33,7 @@ def main(args):
     assert (folder_to_predict/'imgs').is_dir(), 'Images not found'
     
     images_list = list(folder_to_predict.glob('*/*.png'))
-    images_list = [os.path.basename(x) for x in images_list][:50]
+    images_list = [os.path.basename(x) for x in images_list]
     (folder_to_predict/'predicted_masks').mkdir(exist_ok=True)
 
     test_dataset = InferenceRetriever(
