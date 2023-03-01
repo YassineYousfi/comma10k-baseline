@@ -27,7 +27,7 @@ def main(args):
     wandb_logger.log_hyperparams(args)
 
     checkpoint_callback = ModelCheckpoint(
-        dirpath="/home/gregor/logs/segnet/",  # TODO change before merge
+        dirpath="/home/yyousfi1/LogFiles/comma/",  # TODO change before merge
         filename="{epoch:02d}_{val_loss:.4f}",
         save_top_k=10,
         monitor="val_loss",

@@ -50,13 +50,6 @@ class LitModel(pl.LightningModule):
 
         self.save_hyperparameters()
 
-        # self.train_custom_metrics = {
-        #     "train_acc": smp.utils.metrics.Accuracy(activation="softmax2d")
-        # }
-        # self.validation_custom_metrics = {
-        #     "val_acc": smp.utils.metrics.Accuracy(activation="softmax2d")
-        # }
-
         self.preprocess_fn = smp.encoders.get_preprocessing_fn(
             self.backbone, pretrained="imagenet"
         )
@@ -82,9 +75,7 @@ class LitModel(pl.LightningModule):
 
     def forward(self, x):
         """Forward pass. Returns logits."""
-
         x = self.net(x)
-
         return x
 
     def loss(self, logits, labels):
@@ -96,17 +87,11 @@ class LitModel(pl.LightningModule):
         x, y = batch
         y_logits = self.forward(x)
 
-        # 2. Compute loss & accuracy:
+        # 2. Compute loss:
         train_loss = self.loss(y_logits, y)
 
-        metrics = {}
-        # for metric_name in self.train_custom_metrics.keys():
-        #     metrics[metric_name] = self.train_custom_metrics[metric_name](y_logits, y)
-
         # 3. Outputs:
-        output = OrderedDict(
-            {"loss": train_loss, "log": metrics, "progress_bar": metrics}
-        )
+        output = OrderedDict({"loss": train_loss})
         self.log("train_loss", train_loss)
         self.log("lr", self.trainer.optimizers[0].param_groups[0]["lr"])
         return output
@@ -116,16 +101,10 @@ class LitModel(pl.LightningModule):
         x, y = batch
         y_logits = self.forward(x)
 
-        # 2. Compute loss & accuracy:
+        # 2. Compute loss:
         val_loss = self.loss(y_logits, y)
 
         metrics = {"val_loss": val_loss}
-
-        # for metric_name in self.validation_custom_metrics.keys():
-        #     metrics[metric_name] = self.validation_custom_metrics[metric_name](
-        #         y_logits, y
-        #     )
-
         return metrics
 
     def validation_epoch_end(self, outputs):
@@ -252,7 +231,7 @@ class LitModel(pl.LightningModule):
         )
         parser.add_argument(
             "--data-path",
-            default="/home/gregor/Desktop/segnet/comma10k",  # Change before merge
+            default="/home/yyousfi1/commaai/comma10k",
             type=str,
             metavar="dp",
             help="data_path",
